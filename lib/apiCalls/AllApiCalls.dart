@@ -481,7 +481,7 @@ List<QuizData> quizCategories=[];
 
 final response=await http.get(Uri.parse("${baseurl}quiz_categories"));
 
-
+print(response.body);
 for(Map<String,dynamic> i in jsonDecode(response.body)["data"]){
 
   quizCategories.add(QuizData.fromJson(i));
@@ -509,7 +509,7 @@ List<QuizTitle> quizCategories=[];
 
 final response=await http.post(Uri.parse("${baseurl}fetch_quizzes_by_category"),body: body);
 
-
+print(response.body);
 for(Map<String,dynamic> i in jsonDecode(response.body)){
 
   quizCategories.add(QuizTitle(id: i['id'],title: i['title'],description: i['description']));
@@ -525,15 +525,16 @@ return quizCategories;
 
 }
 
-static Future<void> postComments(String msg ) async{
+static Future<void> postComments(String msg , int rromid,int topicid) async{
 
-
+print("${rromid}+${topicid}");
 SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
 final response=await http.post(Uri.parse("${baseurl}add_discussion_forum_comment"),
+
 body: {
     "message":msg,
-    "room_id": "3",
-    "topic_id": "5",
+    "room_id": "${rromid}",
+    "topic_id": "${topicid}",
     "commented_by":"8",
     "created_by":sharedPreferences.getInt("userid").toString()
 }

@@ -14,8 +14,9 @@ import 'package:investdost/Screens/notification.dart';
 import 'package:investdost/Screens/roomsPage.dart';
 
 class RoomTopicPage extends StatefulWidget {
-  RoomTopicPage({required this.profileImage});
+  RoomTopicPage({required this.profileImage,required this.roomid});
   String profileImage;
+  int roomid;
   @override
   State<RoomTopicPage> createState() => _RoomTopicPageState();
 }
@@ -70,7 +71,7 @@ Container(
   return InkWell(
    onTap: ()async{
     // ApiCalls.GetCommentByTOpics();
-    Get.to(ChatsForum(roomname:controller.topicroom[ind].topic ?? "InvestDost" ,profileImage: widget.profileImage,));
+    Get.to(ChatsForum(roomname:controller.topicroom[ind].topic ?? "InvestDost" ,profileImage: widget.profileImage,roomid: widget.roomid,topicId: controller.topicroom[ind].id??0,));
    }, 
     child:Card(
       color: Colors.white,

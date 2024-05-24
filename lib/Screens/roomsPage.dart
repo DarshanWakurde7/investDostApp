@@ -78,7 +78,7 @@ Container(
   return InkWell(
    onTap: ()async{
        openControllewr.fetchRoomTopics(openControllewr.myroom[ind].id??1);
-    Get.to(RoomTopicPage(profileImage: userDetailsPojo.profilePic??"profile_pic/1712818972_IMG_20240409_220900.jpg",));
+    Get.to(RoomTopicPage(profileImage: userDetailsPojo.profilePic??"profile_pic/1712818972_IMG_20240409_220900.jpg",roomid: openControllewr.myroom[ind].id??0 ,));
    }, 
     child: Card(
       color: Colors.white,

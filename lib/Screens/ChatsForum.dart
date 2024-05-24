@@ -45,8 +45,9 @@ class Comment {
 
 class ChatsForum extends StatefulWidget {
 
-  ChatsForum({required this.roomname,required this.profileImage});
+  ChatsForum({required this.roomname,required this.profileImage,required this.roomid,required this.topicId});
   String profileImage;
+  int roomid,topicId;
 
 String roomname;
 
@@ -114,7 +115,7 @@ class _ChatsForumState extends State<ChatsForum> {
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: EdgeInsets.all(10),
-                      child: CommentWidget(comment: commentsdata[index],roomname: widget.roomname,profileImage: widget.profileImage,threadedComment: false,));
+                      child: CommentWidget(comment: commentsdata[index],roomname: widget.roomname,profileImage: widget.profileImage,threadedComment: false,roomid: widget.roomid,topicid: widget.topicId,));
                   },
                 ),
               ),
@@ -144,7 +145,8 @@ class _ChatsForumState extends State<ChatsForum> {
                       angle: 24.5,
                       child: InkWell(
                         onTap: ()async{
-                              await ApiCalls.postComments(commetController.text.toString());
+                          print("${commetController.text.toString()},${widget.roomid},${widget.topicId}");
+                              await ApiCalls.postComments(commetController.text.toString(),widget.roomid,widget.topicId);
                               getApicallForChat();
                             
                         // scrollController.animateTo(scrollController.position.maxScrollExtent, duration:const Duration(milliseconds: 500), curve: Curves.bounceIn);
@@ -168,8 +170,9 @@ class CommentWidget extends StatefulWidget {
   final Comment comment;
   String roomname,profileImage;
   bool threadedComment;
+  int roomid,topicid;
 
-  CommentWidget({required this.comment,required this.roomname,required this.profileImage,required this.threadedComment});
+  CommentWidget({required this.comment,required this.roomname,required this.profileImage,required this.threadedComment,required this.roomid,required this.topicid});
 
   @override
   State<CommentWidget> createState() => _CommentWidgetState();
@@ -252,10 +255,10 @@ class _CommentWidgetState extends State<CommentWidget> {
                                     
                                    (widget.threadedComment)? {
 
-                                    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>ChatsForum(roomname: widget.roomname,profileImage: widget.profileImage,))),
+                                    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>ChatsForum(roomname: widget.roomname,profileImage: widget.profileImage,roomid: widget.roomid,topicId: widget.topicid,))),
                                     Navigator.pop(context)
                                     
-                                    } :   Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>ChatsForum(roomname: widget.roomname,profileImage: widget.profileImage,)));
+                                    } :   Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>ChatsForum(roomname: widget.roomname,profileImage: widget.profileImage,roomid: widget.roomid,topicId: widget.topicid,)));
 
                               },);
 
@@ -284,7 +287,7 @@ class _CommentWidgetState extends State<CommentWidget> {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        ThreadedCommentsPage(comment: widget.comment,roomname:widget.roomname ,profile: widget.profileImage,),
+                        ThreadedCommentsPage(comment: widget.comment,roomname:widget.roomname ,profile: widget.profileImage,roomid: widget.roomid,topicid: widget.topicid,),
                   ),
                 );
               },
@@ -309,7 +312,8 @@ class ThreadedCommentsPage extends StatefulWidget {
   final Comment comment;
   String profile;
     String roomname;
-  ThreadedCommentsPage({required this.comment,required this.roomname,required this.profile});
+    int roomid,topicid;
+  ThreadedCommentsPage({required this.comment,required this.roomname,required this.profile,required this.roomid,required this.topicid});
 
   @override
   State<ThreadedCommentsPage> createState() => _ThreadedCommentsPageState();
@@ -353,7 +357,7 @@ class _ThreadedCommentsPageState extends State<ThreadedCommentsPage> {
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: EdgeInsets.all(10),
-                        child: CommentWidget(comment: widget.comment.children[index],roomname: widget.roomname,profileImage:widget.profile,threadedComment: true,));
+                        child: CommentWidget(comment: widget.comment.children[index],roomname: widget.roomname,profileImage:widget.profile,threadedComment: true,roomid: widget.roomid,topicid: widget.topicid,));
                     },
                   ),
                 ),
@@ -390,7 +394,7 @@ class _ThreadedCommentsPageState extends State<ThreadedCommentsPage> {
                                     });
                                     getApicallForChat();
                                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Reply added")));
-                                    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>ChatsForum(roomname: widget.roomname,profileImage: widget.profile,)));
+                                    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>ChatsForum(roomname: widget.roomname,profileImage: widget.profile,roomid: widget.roomid,topicId: widget.topicid,)));
                                 
                               },
                               child: const Icon(Icons.send,size: 28,color: Colors.amber,))),

@@ -134,12 +134,10 @@ centerTitle: true,),
                  ),
                       SizedBox(height: 0,),
                  ListView.builder(
-                  
                   shrinkWrap: true,
                   reverse: true,
                   itemCount: quizController.quizdata[index].options!.length,
                   itemBuilder: (context,ind){
-                    
                       return Option(options: quizController.quizdata[index].options![ind], selectedOption:_selectedindex??-1,optionind: ind,myselectedindex: (ind){
                         if(!isSelected){
                           print(isSelected);
